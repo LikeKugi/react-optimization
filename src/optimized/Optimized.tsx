@@ -1,7 +1,6 @@
-import { FC, memo, useCallback, useMemo, useState } from 'react';
+import { forwardRef, memo, useCallback, useMemo, useState } from 'react';
 
 const expensiveCalculations = () => {
-
   console.log('rerender expensiveCalculations');
 
   let a = 0;
@@ -18,16 +17,12 @@ const expensiveCalculations = () => {
 };
 
 const Innerest = memo(() => {
-
   console.log('rerender innerest');
-
   return (<span>innerest</span>);
 });
 
 const Inner = ({ count }: { count: number }) => {
-
   console.log('rerender inner');
-
   if (count % 2) {
     return (
       <div>
@@ -47,14 +42,13 @@ const Footer = memo(({ date }: { date: string }) => {
   return (<span>Today: {date}</span>);
 });
 
-const Button: FC<React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>> = memo(({
+const Button = memo(forwardRef<HTMLButtonElement, React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>>(({
                                                                                                                  children,
                                                                                                                  ...other
-                                                                                                               }) => {
+                                                                                                               }, ref) => {
   console.log('rerender button');
-
-  return (<button {...other}>{children}</button>);
-});
+  return (<button ref={ref} {...other}>{children}</button>);
+}));
 
 export const Optimized = () => {
 
