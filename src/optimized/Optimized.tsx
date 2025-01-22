@@ -1,5 +1,9 @@
-import { forwardRef, memo, useCallback, useMemo, useState } from 'react';
+import { forwardRef, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+/**
+ * No need to change this function
+ * @returns {`${number}/${number}/${number} | ${number}`}
+ */
 const expensiveCalculations = () => {
   console.log('rerender expensiveCalculations');
 
@@ -21,12 +25,24 @@ const Innerest = memo(() => {
   return (<span>innerest</span>);
 });
 
+const Counter = memo(({ count }: { count: number }) => {
+
+  useEffect(() => {
+
+    return () => {
+      console.log('Should announce only on unmount');
+    };
+  }, []);
+
+  return (<span>{count}</span>);
+});
+
 const Inner = ({ count }: { count: number }) => {
   console.log('rerender inner');
   if (count % 2) {
     return (
       <div>
-        <span> {count} </span>
+        <Counter count={count}/>
         <Innerest key={'optimize-innerest'}/>
       </div>
     );
@@ -43,9 +59,9 @@ const Footer = memo(({ date }: { date: string }) => {
 });
 
 const Button = memo(forwardRef<HTMLButtonElement, React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>>(({
-                                                                                                                 children,
-                                                                                                                 ...other
-                                                                                                               }, ref) => {
+                                                                                                                                                children,
+                                                                                                                                                ...other
+                                                                                                                                              }, ref) => {
   console.log('rerender button');
   return (<button ref={ref} {...other}>{children}</button>);
 }));
@@ -54,17 +70,25 @@ export const Optimized = () => {
 
   const [count, setCount] = useState(0);
 
-  const date = useMemo(() => expensiveCalculations(), []);
+  const date = useMemo(() => expensiveCalculations(), [new Date().getDate()]);
 
   const buttonClickHandler = useCallback(() => {
-   setCount(prevState => prevState + 1);
-  }, [])
+    setCount(prevState => prevState + 1);
+  }, []);
+
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+
+  if (!buttonRef.current) {
+    console.log('Should not announce that message');
+  }
 
   return (
     <main className="main">
-      <Button onClick={buttonClickHandler}>increase</Button>
+      <Button ref={buttonRef}
+              onClick={buttonClickHandler}>increase</Button>
       <Inner count={count}/>
-      <Footer date={date} key={'footer'}/>
+      <Footer date={date}
+              key={'footer'}/>
     </main>
   );
-}
+};

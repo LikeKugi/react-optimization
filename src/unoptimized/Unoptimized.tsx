@@ -1,5 +1,10 @@
-import { FC, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 
+
+/**
+ * No need to change this function
+ * @returns {`${number}/${number}/${number} | ${number}`}
+ */
 const expensiveCalculations = () => {
 
   console.log('rerender expensiveCalculations');
@@ -24,6 +29,13 @@ const Innerest = () => {
   return (<span>innerest</span>);
 };
 
+const Counter = ({ count }: { count: number }) => {
+
+  console.log('Should announce only on unmount');
+
+  return (<span>{count}</span>);
+}
+
 const Inner = ({ count }: { count: number }) => {
 
   console.log('rerender inner');
@@ -31,7 +43,7 @@ const Inner = ({ count }: { count: number }) => {
   if (count % 2) {
     return (
       <div>
-        <span> {count} </span>
+        <Counter count={count} />
         <Innerest/>
       </div>
     );
@@ -59,6 +71,12 @@ const Button: FC<React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonEl
 export const Unoptimized = () => {
 
   const [count, setCount] = useState(0);
+
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+
+  if (!buttonRef.current) {
+    console.log('Should not announce that message');
+  }
 
   return (
     <main className="main">
