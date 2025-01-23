@@ -25,3 +25,7 @@ The task is to optimize the code as much as possible.
 ## Final result
 
 - `Optimized.tsx`
+
+## Codesandbox link
+
+[https://codesandbox.io/p/sandbox/charming-jepsen-hm5mv2?file=%2Fsrc%2FApp.tsx](Codesandbox playground)
