@@ -28,4 +28,4 @@ The task is to optimize the code as much as possible.
 
 ## Codesandbox link
 
-[https://codesandbox.io/p/sandbox/charming-jepsen-hm5mv2?file=%2Fsrc%2FApp.tsx](Codesandbox_playground)
+[Codesandbox_playground](https://codesandbox.io/p/sandbox/charming-jepsen-hm5mv2?file=%2Fsrc%2FApp.tsx)
