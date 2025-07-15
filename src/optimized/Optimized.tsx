@@ -1,4 +1,4 @@
-import { forwardRef, memo, useCallback, useMemo, useState } from 'react';
+import { forwardRef, memo, useCallback, useEffect, useMemo, useState } from 'react';
 
 const expensiveCalculations = () => {
   console.log('rerender expensiveCalculations');
@@ -14,6 +14,16 @@ const expensiveCalculations = () => {
   const nowYear = new Date().getFullYear();
 
   return `${today}/${nowMonth}/${nowYear} | ${a}`;
+};
+
+const getExpensiveCount = () => {
+  let a = 0;
+
+  for (let i = 0; i < 1_000_000_000; i++) {
+    a += 1;
+  }
+
+  return Math.random() + 1;
 };
 
 const Innerest = memo(() => {
@@ -54,11 +64,20 @@ export const Optimized = () => {
 
   const [count, setCount] = useState(0);
 
-  const date = useMemo(() => expensiveCalculations(), []);
+  const date = useMemo(() => expensiveCalculations(), [new Date().getDate()]);
 
   const buttonClickHandler = useCallback(() => {
    setCount(prevState => prevState + 1);
   }, [])
+
+  useEffect(() => {
+    if (!(count % 5)) {
+      const someCount = getExpensiveCount();
+      console.log("should render only when count is divided by 5 is 0", someCount);
+    }
+  }, [
+    !(count % 5)
+  ])
 
   return (
     <main className="main">

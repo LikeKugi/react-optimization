@@ -17,6 +17,7 @@ The task is to optimize the code as much as possible.
 
 - [] React components are optimized
 - [] Only 1 `console.log` is logged on each button click
+- [] Only 1 `console.log` in counter component
 
 ## Start
 
